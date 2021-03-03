@@ -12,7 +12,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 you can download all the Dependencies By type:
 
-```
+``` 
 npm install
 ```
 
@@ -23,18 +23,14 @@ then start Your server file as well as frontend side by Typing:
 npm start
 ```
 
-And repeat same in front-end side
 
-```
-npm start
-```
 
 End with an example of getting some data out of the system or using it for a little demo
 
 
 ## Deployment
 
-You can see here deploement link:
+You can see here deploement link: comming soon...
 
 ## Built With
 
