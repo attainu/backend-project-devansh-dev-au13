@@ -1,4 +1,4 @@
-# Project Title (Instagram Web Application) & Overview:
+# Project Title (Social media Web Application) & Overview:
 
 This project is almost similar to actual social media web application.After signup & login users can create post,delete post, like and comment of other users post as well as own post,users can follow to others users.
 
