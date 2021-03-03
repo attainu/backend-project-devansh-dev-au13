@@ -27,7 +27,7 @@ app.get('/check', (req, res) => {
 });
 
 //importing routes
-// app.use('/api/v1/auth', require('./routes/v1/authRoutes'));
+app.use('/api/v1/auth', require('./routes/authRoutes'));
 // app.use('/api/v1', require('./routes/v1/homeRoutes'));
 // app.use('/api/v1', require('./routes/v1/userRoutes'));
 
