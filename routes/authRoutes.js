@@ -1,7 +1,7 @@
-var express  = require('express')
+import express from 'express';
 var router   = express.Router()
-const { check, validationResult } = require('express-validator');
-const userController = require('../controller/authcontroller');
+import { check, validationResult } from 'express-validator';
+import authController from '../controller/authcontroller';
 router.post('/signup',
 [
     check("name", "Please Enter a Valid Username")
@@ -13,7 +13,9 @@ router.post('/signup',
       min: 6
     })
 ],
-   userController.signup);
+authController.signup);
+router.post('/login', authController.login)
+   
 
 
 

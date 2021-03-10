@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose'
 mongoose.set('debug', true);
 
 const userSchema = new mongoose.Schema({
@@ -18,7 +18,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  jwt_token: { type: Array, default: [] },
   
   resetToken: {
     type: String,

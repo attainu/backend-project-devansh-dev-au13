@@ -1,7 +1,7 @@
-const User = require('../models/User');
-const jwt = require('jsonwebtoken');
-const Helper = require('../config/helper');
-const bcrypt = require('bcryptjs');
+import User from '../models/User';
+import jwt from 'jsonwebtoken';
+import Helper from '../config/helper';
+import bcrypt from 'bcryptjs';
 const { validationResult } = require("express-validator");
 
 module.exports = {
@@ -35,17 +35,45 @@ module.exports = {
                     else {
                         return Helper.response(res, 200, "Signup successfully.")
                     }
-
                 })
             }
             else {
                 return Helper.response(res, 400, "User aleady exist.")
             }
-
         })
        }catch(error){
         return Helper.response(res, 500, "Server error.");
-
        }
     },
+    login:async(req,res)=>{
+        const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+            return res.status(422).json({
+                message: 'Parameter missing', code: 422, errors: errors.array()
+            })
+            }
+            try {
+                let user = await User.findOne({ email: req.body.email });
+                if (!user) {
+                return Helper.response(res, 400, "User not found.")                    
+                }
+                const isMatch = await bcrypt.compare(req.body.password, user.password);
+                if (!isMatch) {
+                return Helper.response(res, 400, "Invalid email or password.")                                        
+                }
+                jwt.sign(
+                    { user: { id: user.id } },
+                    'jwt_secret',
+                    (err, token) => {
+                        if (err) throw err;
+                        var rsss = {"userData":user, token}
+                        return Helper.response(res, 200, "Loggedin sucess!!.", rsss)                                           
+                    }
+                )                
+            } catch (error) {
+            return Helper.response(res, 500, "Server error.");                
+            }
+
+
+    }
 }

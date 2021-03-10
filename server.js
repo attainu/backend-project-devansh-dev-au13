@@ -1,11 +1,11 @@
-const express = require('express')
-const app = express()
-const dotenv = require('dotenv');
-const cors = require('cors');
-const connection = require('./config/connection')
-const bodyParser = require('body-parser');
+import express from 'express';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import morgan from 'morgan';
+import connection from './config/connection';
+const app = express();
 const port = process.env.PORT || 3000;
-const morgan = require('morgan');
 const NODE_ENV = process.env.NODE_ENV || "production"
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 
