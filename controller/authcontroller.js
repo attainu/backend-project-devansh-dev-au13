@@ -84,7 +84,9 @@ module.exports = {
                     message: 'Parameter missing', code: 422, errors: errors.array()
                 })
             }
-            const userId = req.user._id
+            console.log("useridf>>>>>",userId)
+            const userId = req.user.id
+   
             const { oldPassword, newPassword, confirmPassword } = req.body
             if (newPassword == confirmPassword) {
                 await User.findOne({ _id: mongoose.Types.ObjectId(userId) }, async function (err, user) {
