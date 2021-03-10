@@ -2,6 +2,7 @@ import User from '../models/User';
 import jwt from 'jsonwebtoken';
 import Helper from '../config/helper';
 import bcrypt from 'bcryptjs';
+import mongoose from 'mongoose';
 const { validationResult } = require("express-validator");
 
 module.exports = {
@@ -46,7 +47,7 @@ module.exports = {
        }
     },
     login:async(req,res)=>{
-        const errors = validationResult(req);
+            const errors = validationResult(req);
             if (!errors.isEmpty()) {
             return res.status(422).json({
                 message: 'Parameter missing', code: 422, errors: errors.array()
@@ -73,7 +74,51 @@ module.exports = {
             } catch (error) {
             return Helper.response(res, 500, "Server error.");                
             }
+    },
 
+    changePassowrd:async(req,res)=>{
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({
+                    message: 'Parameter missing', code: 422, errors: errors.array()
+                })
+            }
+            const userId = req.user._id
+            const { oldPassword, newPassword, confirmPassword } = req.body
+            if (newPassword == confirmPassword) {
+                await User.findOne({ _id: mongoose.Types.ObjectId(userId) }, async function (err, user) {
+                    if (err) {
+                       return Helper.response(res, 400, "Something went wrong.");                
+                    } else if (!user) {
+                        return Helper.response(res, 400, "User not found.")                    
+                    } else {
+                        //console.log(user.password); return false;
+                        let compare = await bcrypt.compare(oldPassword, user.password);
+                        if (compare) {
+                            let hashedPassword = await bcrypt.hash(newPassword, 12);
+                            user.password = hashedPassword;
+                            user.save(function (err, newResult) {
+                                if (err) {
+                                    console.log(err) 
+                                    return Helper.response(res, 400, "Something went wrong.");                
+                                }
+                                else {
+                                    return Helper.response(res, 200, "Password changed successfully.");                
+                                }
+                            })
+                        } else {
+                            return Helper.response(res, 400, "Invalid old password.");                
+                        }
+                    }
+                });
+            } else {
+                return Helper.response(res, 400, "Password and confirm password doesnot match.");                
+            }           
 
+        } catch (error) {
+            console.log(">>>>>>>", error)
+            return Helper.response(res, 500, "Server error.");                            
+        }
     }
 }

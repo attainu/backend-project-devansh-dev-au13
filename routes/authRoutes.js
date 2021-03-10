@@ -2,6 +2,7 @@ import express from 'express';
 var router   = express.Router()
 import { check, validationResult } from 'express-validator';
 import authController from '../controller/authcontroller';
+import auth from '../middleware/auth'
 router.post('/signup',
 [
     check("name", "Please Enter a Valid Username")
@@ -15,7 +16,14 @@ router.post('/signup',
 ],
 authController.signup);
 router.post('/login', authController.login)
-   
+router.post('/change-password',
+[
+  check("oldPassword", "Please Enter old password").not().isEmpty(),
+  check("newPassword", "Please Enter new password").not().isEmpty(),
+  check("confirmPassword", "Please Enter new password again").not().isEmpty() 
+],
+authController.changePassowrd)
+
 
 
 
