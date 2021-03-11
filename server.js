@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
+import path from 'path';
 import connection from './config/connection';
 const app = express();
 const port = process.env.PORT || 3000;
@@ -18,6 +19,7 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use('/uploads',express.static(path.join(__dirname, 'public/uploads')));
 
 
 
@@ -28,8 +30,8 @@ app.get('/check', (req, res) => {
 
 //importing routes
 app.use('/api/v1/auth', require('./routes/authRoutes'));
+app.use('/api/v1', require('./routes/userRoutes'));
 // app.use('/api/v1', require('./routes/v1/homeRoutes'));
-// app.use('/api/v1', require('./routes/v1/userRoutes'));
 
 //setting up custom error message for routes 
 app.use((req, res, next) => {
